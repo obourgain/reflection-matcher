@@ -21,7 +21,6 @@ public class PathStack {
 
     public void pop() {
         PathElement pop = path.pop();
-        System.out.println(pop.asString());
     }
 
     public String pathAsString() {
