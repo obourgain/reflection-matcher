@@ -1,7 +1,6 @@
 package com.github.obourgain.matcher.reflection.custom;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * @author olivier bourgain

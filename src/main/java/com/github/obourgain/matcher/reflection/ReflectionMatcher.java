@@ -1,5 +1,6 @@
 package com.github.obourgain.matcher.reflection;
 
+import com.github.obourgain.matcher.reflection.custom.CustomComparison;
 import com.github.obourgain.matcher.reflection.graph.ObjectGraph;
 import com.github.obourgain.matcher.reflection.path.PathStack;
 import org.slf4j.Logger;
@@ -8,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author olivier bourgain
@@ -26,8 +25,7 @@ public class ReflectionMatcher {
     private PathStack pathStack = new PathStack();
     private ObjectGraph objectGraph = new ObjectGraph();
     private Configuration configuration;
-
-    private Map<Class<?>, Class<?>> customComparisons = new HashMap<>();
+    private ComparisonFactory comparisonFactory;
 
     public ReflectionMatcher() {
         this(Configuration.builder());
@@ -36,6 +34,7 @@ public class ReflectionMatcher {
     public ReflectionMatcher(Configuration configuration) {
         this.configuration = configuration;
         assertions = new Assertions(configuration);
+        comparisonFactory = new ComparisonFactory(configuration, assertions, pathStack);
     }
 
     public void compareObjects(Object obj1, Object obj2) throws IllegalAccessException {
@@ -60,12 +59,22 @@ public class ReflectionMatcher {
             assertions.fail("comparing objects with different classes " + obj1.getClass() + " " + obj2.getClass());
         }
 
-        compareFields(obj1, obj2, obj1.getClass().getDeclaredFields());
+        try {
+            CustomComparison customComparator = comparisonFactory.getObjectComparison(obj1.getClass());
+            if(customComparator != null) {
+                customComparator.compare(obj1, obj2);
+            } else {
+                compareFields(obj1, obj2, obj1.getClass().getDeclaredFields());
 
-        Class<?> clazz = obj1.getClass();
-        while(clazz.getSuperclass() != null) {
-            clazz = clazz.getSuperclass();
-            compareFields(obj1, obj2, clazz.getDeclaredFields());
+                Class<?> clazz = obj1.getClass();
+                while(clazz.getSuperclass() != null) {
+                    clazz = clazz.getSuperclass();
+                    compareFields(obj1, obj2, clazz.getDeclaredFields());
+                }
+            }
+        } catch (Throwable t) {
+            logger.error(path());
+            Assertions.internalThrow(t);
         }
     }
 
@@ -74,8 +83,17 @@ public class ReflectionMatcher {
             if(configuration.ignoreTransient() && Modifier.isTransient(field.getModifiers())) {
                 continue;
             }
+            if(configuration.isIgnored(field)) {
+                continue;
+            }
             pathStack.push(field.getName());
-            compareField(obj1, obj2, field);
+            CustomComparison fieldComparison = comparisonFactory.getFieldComparison(field);
+            if(fieldComparison != null) {
+                field.setAccessible(true);
+                fieldComparison.compare(field.get(obj1), field.get(obj2));
+            } else {
+                compareField(obj1, obj2, field);
+            }
             pathStack.pop();
         }
     }
