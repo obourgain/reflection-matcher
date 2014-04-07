@@ -20,7 +20,7 @@ public abstract class AbstractCustomComparison<T> implements CustomComparison<T>
             return;
         }
         if (t1 == null) {
-            assertions.fail("comparing non null with null");
+            assertions.fail("comparing null with non null");
         }
         if (t2 == null) {
             assertions.fail("comparing non null with null");
