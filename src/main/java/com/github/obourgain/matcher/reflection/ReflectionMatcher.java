@@ -55,15 +55,15 @@ public class ReflectionMatcher {
         assert obj1 != null;
         assert obj2 != null;
 
-        if (obj1.getClass() != obj2.getClass()) {
-            assertions.fail("comparing objects with different classes " + obj1.getClass() + " " + obj2.getClass());
-        }
-
         try {
             CustomComparison customComparator = comparisonFactory.getObjectComparison(obj1.getClass());
             if(customComparator != null) {
                 customComparator.compare(obj1, obj2);
             } else {
+                if (obj1.getClass() != obj2.getClass()) {
+                    assertions.fail("comparing objects with different classes " + obj1.getClass() + " " + obj2.getClass());
+                }
+
                 compareFields(obj1, obj2, obj1.getClass().getDeclaredFields());
 
                 Class<?> clazz = obj1.getClass();
@@ -162,10 +162,10 @@ public class ReflectionMatcher {
         }
     }
 
-    private void compareObjectArrays(Object arrayObj1, Object arrayObj2, int length) {
+    private void compareObjectArrays(Object arrayObj1, Object arrayObj2, int length) throws IllegalAccessException {
         for (int i = 0; i < length; i++) {
             pathStack.push(i);
-            assertions.assertEquals(Array.get(arrayObj1, i), Array.get(arrayObj2, i));
+            compareObjects(Array.get(arrayObj1, i), Array.get(arrayObj2, i));
             pathStack.pop();
         }
     }

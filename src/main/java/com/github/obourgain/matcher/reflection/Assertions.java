@@ -1,6 +1,7 @@
 package com.github.obourgain.matcher.reflection;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 /**
  * Some code taken or heavily inspired from JUnit's org.junit.Assert

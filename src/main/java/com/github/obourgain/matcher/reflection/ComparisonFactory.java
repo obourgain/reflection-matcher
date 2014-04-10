@@ -23,15 +23,23 @@ public class ComparisonFactory {
     }
 
     public CustomComparison getObjectComparison(Class<?> clazz) {
-        AbstractCustomComparison customComparison = null;
-        if (clazz == String.class) {
-            customComparison = new StringComparison();
+        Class<? extends CustomComparison> customComparisonClass = configuration.customClassComparisons.get(clazz);
+
+        if (customComparisonClass == null) {
+            return null;
         }
-        if (customComparison != null) {
-            customComparison.setAssertions(assertions);
-            customComparison.setConfiguration(configuration);
-            customComparison.setPathStack(pathStack);
+
+        CustomComparison customComparison;
+        try {
+            customComparison = customComparisonClass.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
+        assert customComparison instanceof AbstractCustomComparison;
+        ((AbstractCustomComparison) customComparison).setAssertions(assertions);
+        ((AbstractCustomComparison) customComparison).setConfiguration(configuration);
+        ((AbstractCustomComparison) customComparison).setPathStack(pathStack);
         return customComparison;
     }
 
