@@ -80,6 +80,9 @@ public class ReflectionMatcher {
 
     private void compareFields(Object obj1, Object obj2, Field[] declaredFields) throws IllegalAccessException {
         for (Field field : declaredFields) {
+            if(Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
             if(configuration.ignoreTransient() && Modifier.isTransient(field.getModifiers())) {
                 continue;
             }
