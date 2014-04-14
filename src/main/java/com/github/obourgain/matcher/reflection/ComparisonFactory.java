@@ -15,11 +15,13 @@ public class ComparisonFactory {
     private final Configuration configuration;
     private final Assertions assertions;
     private final PathStack pathStack;
+    private final ReflectionMatcher reflectionMatcher;
 
-    public ComparisonFactory(Configuration configuration, Assertions assertions, PathStack pathStack) {
+    public ComparisonFactory(Configuration configuration, Assertions assertions, PathStack pathStack, ReflectionMatcher reflectionMatcher) {
         this.configuration = configuration;
         this.assertions = assertions;
         this.pathStack = pathStack;
+        this.reflectionMatcher = reflectionMatcher;
     }
 
     public CustomComparison getObjectComparison(Class<?> clazz) {
@@ -40,6 +42,7 @@ public class ComparisonFactory {
         ((AbstractCustomComparison) customComparison).setAssertions(assertions);
         ((AbstractCustomComparison) customComparison).setConfiguration(configuration);
         ((AbstractCustomComparison) customComparison).setPathStack(pathStack);
+        ((AbstractCustomComparison) customComparison).setReflectionMatcher(reflectionMatcher);
         return customComparison;
     }
 
@@ -60,6 +63,7 @@ public class ComparisonFactory {
         ((AbstractCustomComparison) customComparison).setAssertions(assertions);
         ((AbstractCustomComparison) customComparison).setConfiguration(configuration);
         ((AbstractCustomComparison) customComparison).setPathStack(pathStack);
+        ((AbstractCustomComparison) customComparison).setReflectionMatcher(reflectionMatcher);
         return customComparison;
     }
 

@@ -14,9 +14,9 @@ public class MapComparison<T extends Map<K, V>, K, V> extends AbstractCustomComp
 
         assertions.assertEquals(size1, size2);
 
-        for (Map.Entry<K, V> e : map1.entrySet()) {
-            V v = map2.get(e.getKey());
-            assertions.assertEquals(e.getValue(), v);
+        for (Map.Entry<K, V> entry : map1.entrySet()) {
+            V v = map2.get(entry.getKey());
+            reflectionMatcher.compareObjects(entry.getValue(), v);
         }
 
     }

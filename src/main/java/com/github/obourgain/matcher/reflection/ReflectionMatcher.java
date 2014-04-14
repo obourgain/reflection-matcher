@@ -34,10 +34,10 @@ public class ReflectionMatcher {
     public ReflectionMatcher(Configuration configuration) {
         this.configuration = configuration;
         assertions = new Assertions(configuration);
-        comparisonFactory = new ComparisonFactory(configuration, assertions, pathStack);
+        comparisonFactory = new ComparisonFactory(configuration, assertions, pathStack, this);
     }
 
-    public void compareObjects(Object obj1, Object obj2) throws IllegalAccessException {
+    public void compareObjects(Object obj1, Object obj2) {
         if (obj1 == null && obj2 == null) {
             return;
         }

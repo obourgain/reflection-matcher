@@ -20,7 +20,7 @@ public class ListComparison<T extends Collection<E>, E> extends AbstractCustomCo
 
         for (int i = 0; i < col1.size(); i++) {
             pathStack.push(i);
-            assertions.assertEquals(iterator1.next(), iterator2.next());
+            reflectionMatcher.compareObjects(iterator1.next(), iterator2.next());
             pathStack.pop();
         }
     }

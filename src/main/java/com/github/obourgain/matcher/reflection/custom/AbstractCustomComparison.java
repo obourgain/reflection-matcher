@@ -2,6 +2,7 @@ package com.github.obourgain.matcher.reflection.custom;
 
 import com.github.obourgain.matcher.reflection.Assertions;
 import com.github.obourgain.matcher.reflection.Configuration;
+import com.github.obourgain.matcher.reflection.ReflectionMatcher;
 import com.github.obourgain.matcher.reflection.path.PathStack;
 
 /**
@@ -12,6 +13,7 @@ public abstract class AbstractCustomComparison<T> implements CustomComparison<T>
     protected Configuration configuration;
     protected Assertions assertions;
     protected PathStack pathStack;
+    protected ReflectionMatcher reflectionMatcher;
 
     protected abstract void doCompare(T t1, T t2);
 
@@ -45,6 +47,10 @@ public abstract class AbstractCustomComparison<T> implements CustomComparison<T>
 
     public void setAssertions(Assertions assertions) {
         this.assertions = assertions;
+    }
+
+    public void setReflectionMatcher(ReflectionMatcher reflectionMatcher) {
+        this.reflectionMatcher = reflectionMatcher;
     }
 
     public void setPathStack(PathStack pathStack) {

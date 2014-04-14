@@ -58,7 +58,7 @@ public class ReflectionMatcherObjectArraysTest extends AbstractTest {
             matcher.compareObjects(theObject1, theObject2);
             failed = true;
         } catch (MatchException e) {
-            Assert.assertThat(matcher.path(), is("anObjectArray.#1"));
+            Assert.assertThat(matcher.path(), is("anObjectArray.#1.aLong"));
         }
         if (failed) {
             Assert.fail();
@@ -128,7 +128,7 @@ public class ReflectionMatcherObjectArraysTest extends AbstractTest {
             matcher.compareObjects(theObject1, theObject2);
             failed = true;
         } catch (MatchException e) {
-            Assert.assertThat(matcher.path(), is("anArrayOfObjectArrays.#2.#1"));
+            Assert.assertThat(matcher.path(), is("anArrayOfObjectArrays.#2.#1.aLong"));
         }
         if (failed) {
             Assert.fail();
