@@ -2,7 +2,6 @@ package com.github.obourgain.matcher.reflection;
 
 import com.github.obourgain.matcher.reflection.custom.AbstractCustomComparison;
 import com.github.obourgain.matcher.reflection.custom.CustomComparison;
-import com.github.obourgain.matcher.reflection.custom.StringComparison;
 import com.github.obourgain.matcher.reflection.path.PathStack;
 
 import java.lang.reflect.Field;

@@ -1,7 +1,6 @@
 package com.github.obourgain.matcher.reflection;
 
 import com.github.obourgain.matcher.reflection.custom.CustomComparison;
-import com.github.obourgain.matcher.reflection.custom.StringComparison;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -11,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * TODO have a better specific field comparison mechanism, maps are too limited
  * @author olivier bourgain
  */
 public class Configuration {
